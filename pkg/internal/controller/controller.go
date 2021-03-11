@@ -176,6 +176,7 @@ func (c *Controller) worker() {
 // attempt to process it, by calling the reconcileHandler.
 func (c *Controller) processNextWorkItem() bool {
 	obj, shutdown := c.Queue.Get()
+	log.Info("controller", "obj", obj)
 	if shutdown {
 		// Stop working
 		return false
