@@ -212,6 +212,7 @@ func (c *Controller) reconcileHandler(obj interface{}) bool {
 		// Return true, don't take a break
 		return true
 	}
+	log.V(1).Info("my Reconciled", "Queue_obj", obj, "request", req)
 	// RunInformersAndControllers the syncHandler, passing it the namespace/Name string of the
 	// resource to be synced.
 	if result, err := c.Do.Reconcile(req); err != nil {
@@ -221,6 +222,9 @@ func (c *Controller) reconcileHandler(obj interface{}) bool {
 		ctrlmetrics.ReconcileTotal.WithLabelValues(c.Name, "error").Inc()
 		return false
 	} else if result.RequeueAfter > 0 {
+		log.V(1).Info("my Reconciled", "result", result)
+		log.V(1).Info("my Reconciled", "result.RequeueAfter", result.RequeueAfter)
+
 		// The result.RequeueAfter request will be lost, if it is returned
 		// along with a non-nil error. But this is intended as
 		// We need to drive to stable reconcile loops before queuing due
@@ -230,6 +234,8 @@ func (c *Controller) reconcileHandler(obj interface{}) bool {
 		ctrlmetrics.ReconcileTotal.WithLabelValues(c.Name, "requeue_after").Inc()
 		return true
 	} else if result.Requeue {
+		log.V(1).Info("my Reconciled", "result", result)
+		log.V(1).Info("my Reconciled", "result.Requeue", result.Requeue)
 		c.Queue.AddRateLimited(req)
 		ctrlmetrics.ReconcileTotal.WithLabelValues(c.Name, "requeue").Inc()
 		return true
