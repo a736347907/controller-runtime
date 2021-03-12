@@ -69,7 +69,8 @@ func (e EventHandler) OnAdd(obj interface{}) {
 			return
 		}
 	}
-
+	log.V(1).Info("####################################### event_create ############################################")
+	log.V(1).Info("event_create", "c", c, "e.Queue", e.Queue)
 	// Invoke create handler
 	e.EventHandler.Create(c, e.Queue)
 }
@@ -120,6 +121,8 @@ func (e EventHandler) OnUpdate(oldObj, newObj interface{}) {
 		}
 	}
 
+	log.V(1).Info("########################################## event_update #########################################")
+	log.V(1).Info("event_update", "u", u, "e.Queue", e.Queue)
 	// Invoke update handler
 	e.EventHandler.Update(u, e.Queue)
 }
@@ -171,7 +174,8 @@ func (e EventHandler) OnDelete(obj interface{}) {
 			return
 		}
 	}
-
+	log.V(1).Info("########################################## event_update #########################################")
+	log.V(1).Info("event_update", "d", d, "e.Queue", e.Queue)
 	// Invoke delete handler
 	e.EventHandler.Delete(d, e.Queue)
 }
